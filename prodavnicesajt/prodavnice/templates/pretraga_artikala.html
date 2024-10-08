@@ -1,0 +1,168 @@
+{% extends "base.html" %}
+{% block links %}
+    <ul>
+        <li><a href="{% url 'pretraga_artikala' %}">Pretraga artikala</a></li>
+    </ul>
+{% endblock %}
+{% block content %}
+<div style="margin-top: 2rem;">
+    <h2>Pretraga artikala</h2>
+    <hr/>
+    <form method="post" action="{% url 'pretraga_naziv' %}">
+        {% csrf_token %}
+        <table>
+            <tr>
+                <td>Pretraga reci u nazivu:</td>
+                <td>
+                    <input type="text" name="naziv" placeholder="naziv" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    {% if greska_pretraga_naziv %}
+                    <div class="greska" >{{greska_pretraga_naziv}}</div>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="submit" value="Pretraga"/></td>
+            </tr>
+        </table>
+    </form>
+    <form method="post" action="{% url 'pretraga_opis_fraza' %}" style="margin-top: 2rem;">
+        {% csrf_token %}
+        <table>
+            <tr>
+                <td>Pretraga fraze u opisu:</td>
+                <td>
+                    <input type="text" name="opis" placeholder="opis" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    {% if greska_pretraga_opis_fraza %}
+                    <div class="greska" >{{greska_pretraga_opis_fraza}}</div>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="submit" value="Pretraga"/></td>
+            </tr>
+        </table>
+    </form>
+    <form method="post" action="{% url 'pretraga_naziv_i_opis' %}" style="margin-top: 2rem;">
+        {% csrf_token %}
+        <table>
+            <tr>
+                <td>Pretraga po nazivu i opisu:</td>
+                <td>
+                    <input type="text" name="naziv" placeholder="naziv" />
+                </td>
+                <td>
+                    <input type="text" name="opis" placeholder="opis" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    {% if greska_pretraga_naziv_i_opis %}
+                    <div class="greska" >{{greska_pretraga_naziv_i_opis}}</div>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3"><input type="submit" value="Pretraga"/></td>
+            </tr>
+        </table>
+    </form>
+    <form method="post" action="{% url 'pretraga_naziv_ili_opis' %}" style="margin-top: 2rem;">
+        {% csrf_token %}
+        <table>
+            <tr>
+                <td>Pretraga po nazivu ili opisu:</td>
+                <td>
+                    <input type="text" name="naziv" placeholder="naziv" />
+                </td>
+                <td>
+                    <input type="text" name="opis" placeholder="opis" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    {% if greska_pretraga_naziv_ili_opis %}
+                    <div class="greska" >{{greska_pretraga_naziv_ili_opis}}</div>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3"><input type="submit" value="Pretraga"/></td>
+            </tr>
+        </table>
+    </form>
+    <form method="post" action="{% url 'pretraga_cena' %}" style="margin-top: 2rem;">
+        {% csrf_token %}
+        <table>
+            <tr>
+                <td>Pretraga po ceni:</td>
+                <td>
+                    od <input type="number" name="cena_od" placeholder="od" min="0" value="0" />
+                </td>
+                <td>
+                    do <input type="number" name="cena_do" placeholder="do" min="0" value="0" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    {% if greska_pretraga_cena %}
+                    <div class="greska" >{{greska_pretraga_cena}}</div>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3"><input type="submit" value="Pretraga"/></td>
+            </tr>
+        </table>
+    </form>
+    <form method="post" action="{% url 'pretraga_prodavnica' %}" style="margin-top: 2rem;">
+        {% csrf_token %}
+        <table>
+            <tr>
+                <td>Pretraga po nazivu prodavnice:</td>
+                <td>
+                    <input type="text" name="prodavnica" placeholder="prodavnica" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    {% if greska_pretraga_prodavnica %}
+                    <div class="greska" >{{greska_pretraga_prodavnica}}</div>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="submit" value="Pretraga"/></td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+    <div style="margin-top: 2rem;">
+        {% if rezultat|length > 0 %}
+            <table border="1">
+                <tr>
+                    <th>Artikal</th>
+                    <th>Rezultat</th>
+                </tr>
+                {% for artikal in rezultat %}
+                <tr>
+                    <td>{{ artikal.naziv }} (id: {{ artikal.id }}; {{ artikal.prodavnica }})</td>
+                    <td>{{ artikal.izvor|safe }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            Nema rezultata pretrage.
+        {% endif %}
+    </div>
+
+
+{% endblock %}
